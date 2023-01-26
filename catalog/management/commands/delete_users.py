@@ -8,9 +8,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         user_ids = options['user_ids']
-        admin_user = User.objects.filter(is_superuser=True)
-        admin_user_id = admin_user.get().id
-        if admin_user_id in user_ids:
+        users = User.objects.filter(id__in=user_ids)
+        if users.filter(is_superuser=True).exists():
             raise CommandError('Can not delete admin user!')
-        deleted_users = User.objects.filter(id__in=user_ids).delete()
+        deleted_users = users.delete()
         self.stdout.write(self.style.SUCCESS('Successfully deleted users {}'.format(list(deleted_users)[0])))
