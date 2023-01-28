@@ -1,0 +1,70 @@
+# City Model
+
+>>> City.objects.get(id=2)
+SELECT "catalog_city"."id",
+       "catalog_city"."name"
+  FROM "catalog_city"
+ WHERE "catalog_city"."id" = 2
+ LIMIT 21
+
+
+# Retailer Model
+
+>>> retailer = Retailer.objects.get(id=2)
+SELECT "catalog_retailer"."id",
+       "catalog_retailer"."name",
+       "catalog_retailer"."city_id"
+  FROM "catalog_retailer"
+ WHERE "catalog_retailer"."id" = 2
+ LIMIT 21
+>>> retailer.city
+SELECT "catalog_city"."id",
+       "catalog_city"."name"
+  FROM "catalog_city"
+ WHERE "catalog_city"."id" = 2
+ LIMIT 21
+
+
+# Product Model
+
+>>> product = Product.objects.get(id=2)
+SELECT "catalog_product"."id",
+       "catalog_product"."name",
+       "catalog_product"."retailer_id",
+       "catalog_product"."description"
+  FROM "catalog_product"
+ WHERE "catalog_product"."id" = 2
+ LIMIT 21
+>>> product.retailer
+SELECT "catalog_retailer"."id",
+       "catalog_retailer"."name",
+       "catalog_retailer"."city_id"
+  FROM "catalog_retailer"
+ WHERE "catalog_retailer"."id" = 2
+ LIMIT 21
+
+
+# Customer Model
+
+>>> customer = Customer.objects.select_related('city').get(id=1)
+SELECT "catalog_customer"."id",
+       "catalog_customer"."first_name",
+       "catalog_customer"."last_name",
+       "catalog_customer"."city_id",
+       "catalog_city"."id",
+       "catalog_city"."name"
+  FROM "catalog_customer"
+  LEFT OUTER JOIN "catalog_city"
+    ON ("catalog_customer"."city_id" = "catalog_city"."id")
+ WHERE "catalog_customer"."id" = 1
+ LIMIT 21
+>>> customer.products.all()
+SELECT "catalog_product"."id",
+       "catalog_product"."name",
+       "catalog_product"."retailer_id",
+       "catalog_product"."description"
+  FROM "catalog_product"
+ INNER JOIN "catalog_customer_products"
+    ON ("catalog_product"."id" = "catalog_customer_products"."product_id")
+ WHERE "catalog_customer_products"."customer_id" = 1
+ LIMIT 21
