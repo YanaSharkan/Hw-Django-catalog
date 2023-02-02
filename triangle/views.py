@@ -5,11 +5,11 @@ from .forms import TriangleForm
 
 
 def calculate_triangle(request):
-    params = {}
+    form = TriangleForm(request.GET)
+    params = {'form': form}
     if request.GET.get('hypotenuse'):
         params['result'] = round(float(request.GET.get('hypotenuse')), 3)
-    elif request.method == 'POST':
-        form = TriangleForm(request.POST)
+    else:
         if not form.is_valid():
             params['error'] = 'Triangle\'s legs should be > 0'
         else:

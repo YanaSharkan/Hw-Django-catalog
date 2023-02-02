@@ -10,28 +10,15 @@
         <header><h1>Triangle calculator</h1></header>
         <main>
             {% if result %}
-                <div class="result">Hypotenuse equals: {{result}}</div>
+                <div class="result">Hypotenuse equals: {{ result }}</div>
             {% endif %}
             {% if error %}
-                <div class="error">{{error}}</div>
+                <div class="error">{{ error }}</div>
             {% endif %}
-            <form action="{% url 'triangle:triangle' %}" method="post">
+            <form action="{% url 'triangle:triangle' %}">
                 {% csrf_token %}
-              <div>
-                  <label for="leg_1">Enter leg 1 length: </label>
-                  <input
-                    id="leg_1"
-                    type="number"
-                    name="leg_1" />
-              </div>
-              <div>
-                  <label for="leg_2">Enter leg 2 length: </label>
-                  <input
-                    id="leg_2"
-                    type="number"
-                    name="leg_2" />
-              </div>
-              <input type="submit" value="Calculate" />
+                {{ form }}
+                <input type="submit" value="Calculate" />
             </form>
         </main>
     </body>
