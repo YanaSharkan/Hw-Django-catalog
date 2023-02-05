@@ -18,5 +18,5 @@ from django.urls import include, path
 
 urlpatterns = [
     path('catalog/', include('catalog.urls')),
-    path('triangle/', include('triangle.urls'))
+    path('person/', include('triangle.urls'))
 ]
